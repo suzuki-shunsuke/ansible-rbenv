@@ -1,3 +1,4 @@
 ---
 # defaults file for rbenv
 ghq_executable: ghq
+rbenv_root: "{{ ansible_env.get('RBENV_ROOT', '{}/.rbenv'.format(ansible_env.HOME)) }}"

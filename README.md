@@ -5,6 +5,8 @@ rbenv
 
 Install [rbenv](https://github.com/rbenv/rbenv) and [ruby-build](https://github.com/rbenv/ruby-build).
 
+https://galaxy.ansible.com/suzuki-shunsuke/rbenv/
+
 Requirements
 ------------
 
@@ -14,6 +16,7 @@ Role Variables
 --------------
 
 * ghq_executable: The executable path of ghq command. The default is "ghq".
+* rbenv_root: RBENV_ROOT. The default is the environment variable RBENV_ROOT or HOME/.rbenv .
 
 Dependencies
 ------------
