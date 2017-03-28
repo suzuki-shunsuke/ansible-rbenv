@@ -12,43 +12,43 @@
   with_items:
   - rbenv/rbenv
   - rbenv/ruby-build
-- name: Check ~/.rbenv
+- name: Check $RBENV_ROOT
   stat:
-    path: "{{ansible_env.HOME}}/.rbenv"
+    path: "{{ rbenv_root }}"
   register: st
-- name: Back up ~/.rbenv
-  shell: "mv {{ansible_env.HOME}}/.rbenv {{ansible_env.HOME}}/.rbenv.{{ansible_date_time.date}}-{{ansible_date_time.hour}}-{{ansible_date_time.minute}}-{{ansible_date_time.second}}"
+- name: Back up $RBENV_ROOT
+  shell: "mv {{ rbenv_root }} {{ rbenv_root }}.{{ansible_date_time.date}}-{{ansible_date_time.hour}}-{{ansible_date_time.minute}}-{{ansible_date_time.second}}"
   when: st.stat.exists and not st.stat.islnk
 - name: Make symbolic links
   file:
     src: "{{ghq_root.stdout}}/github.com/rbenv/rbenv"
-    dest: "{{ansible_env.HOME}}/.rbenv"
+    dest: "{{ rbenv_root }}"
     state: link
-- name: mkdir ~/.rbenv/plugins
+- name: mkdir $RBENV_ROOT/plugins
   file:
-    path: "{{ansible_env.HOME}}/.rbenv/plugins"
+    path: "{{ rbenv_root }}/plugins"
     state: directory
-- name: Check ~/.rbenv/plugins/ruby-build
+- name: Check $RBENV_ROOT/plugins/ruby-build
   stat:
-    path: "{{ansible_env.HOME}}/.rbenv/plugins/ruby-build"
+    path: "{{ rbenv_root }}/plugins/ruby-build"
   register: st
-- name: Back up ~/.rbenv/plugins/ruby-build
-  shell: "mv {{ansible_env.HOME}}/.rbenv/plugins/ruby-build {{ansible_env.HOME}}/.rbenv/plugins/ruby-build.{{ansible_date_time.date}}-{{ansible_date_time.hour}}-{{ansible_date_time.minute}}-{{ansible_date_time.second}}"
+- name: Back up $RBENV_ROOT/plugins/ruby-build
+  shell: "mv {{ rbenv_root }}/plugins/ruby-build {{ rbenv_root }}/plugins/ruby-build.{{ansible_date_time.date}}-{{ansible_date_time.hour}}-{{ansible_date_time.minute}}-{{ansible_date_time.second}}"
   when: st.stat.exists and not st.stat.islnk
 - name: Make symbolic links
   file:
     src: "{{ghq_root.stdout}}/github.com/rbenv/ruby-build"
-    dest: "{{ansible_env.HOME}}/.rbenv/plugins/ruby-build"
+    dest: "{{ rbenv_root }}/plugins/ruby-build"
     state: link
 - name: Notice
   debug:
-    msg: "cd ~/.rbenv && src/configure && make -C src"
+    msg: "cd $RBENV_ROOT && src/configure && make -C src"
 - name: Notice
   debug:
     msg: "Install rbenv install dependencies."
 - name: Notice
   debug:
-    msg: "export PATH=$HOME/.rbenv/bin:$PATH"
+    msg: "export PATH=$RBENV_ROOT/bin:$PATH"
 - name: Notice
   debug:
     msg: "eval \"$(rbenv init -)\""
