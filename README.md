@@ -1,8 +1,8 @@
-# rbenv
+# ansible-rbenv
 
 [![Build Status](https://travis-ci.org/suzuki-shunsuke/ansible-rbenv.svg?branch=master)](https://travis-ci.org/suzuki-shunsuke/ansible-rbenv)
 
-Install [rbenv](https://github.com/rbenv/rbenv) and [ruby-build](https://github.com/rbenv/ruby-build).
+ansible role to install [rbenv](https://github.com/rbenv/rbenv) and [ruby-build](https://github.com/rbenv/ruby-build).
 
 https://galaxy.ansible.com/suzuki-shunsuke/rbenv/
 
