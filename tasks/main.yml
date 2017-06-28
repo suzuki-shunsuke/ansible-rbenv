@@ -1,54 +1,39 @@
 ---
 # tasks file for rbenv
-- name: ghq root
-  shell: "{{ghq_executable}} root"
-  register: ghq_root
-  changed_when: false
-- name: Clone rbenv and ruby-build repository
-  ghq:
-    executable: "{{ghq_executable}}"
-    name: "{{item}}"
-    update: yes
-  with_items:
-  - rbenv/rbenv
-  - rbenv/ruby-build
-- name: Check $RBENV_ROOT
-  stat:
-    path: "{{ rbenv_root }}"
-  register: st
-- name: Back up $RBENV_ROOT
-  shell: "mv {{ rbenv_root }} {{ rbenv_root }}.{{ansible_date_time.date}}-{{ansible_date_time.hour}}-{{ansible_date_time.minute}}-{{ansible_date_time.second}}"
-  when: st.stat.exists and not st.stat.islnk
-- name: Make symbolic links
+- name: Create directories
   file:
-    src: "{{ghq_root.stdout}}/github.com/rbenv/rbenv"
-    dest: "{{ rbenv_root }}"
-    state: link
-- name: mkdir $RBENV_ROOT/plugins
-  file:
-    path: "{{ rbenv_root }}/plugins"
+    dest: "{{ rbenv_root | dirname }}"
     state: directory
-- name: Check $RBENV_ROOT/plugins/ruby-build
-  stat:
-    path: "{{ rbenv_root }}/plugins/ruby-build"
-  register: st
-- name: Back up $RBENV_ROOT/plugins/ruby-build
-  shell: "mv {{ rbenv_root }}/plugins/ruby-build {{ rbenv_root }}/plugins/ruby-build.{{ansible_date_time.date}}-{{ansible_date_time.hour}}-{{ansible_date_time.minute}}-{{ansible_date_time.second}}"
-  when: st.stat.exists and not st.stat.islnk
-- name: Make symbolic links
+- name: Clone rbenv
+  git:
+    repo: https://github.com/rbenv/rbenv
+    dest: "{{ rbenv_root }}"
+- name: Create directories
   file:
-    src: "{{ghq_root.stdout}}/github.com/rbenv/ruby-build"
+    dest: "{{ rbenv_root | dirname }}/plugins"
+    state: directory
+- name: Clone ruby-build
+  git:
+    repo: https://github.com/rbenv/ruby-build
     dest: "{{ rbenv_root }}/plugins/ruby-build"
-    state: link
-- name: Notice
-  debug:
-    msg: "cd $RBENV_ROOT && src/configure && make -C src"
-- name: Notice
-  debug:
-    msg: "Install rbenv install dependencies."
-- name: Notice
-  debug:
-    msg: "export PATH=$RBENV_ROOT/bin:$PATH"
-- name: Notice
-  debug:
-    msg: "eval \"$(rbenv init -)\""
+- block:
+  - name: Add configurations to ~/.bashrc, ~/.profile, or ~/.zshrc or etc
+    lineinfile:
+      dest: "{{ rbenv_rc_path }}"
+      line: 'export RBENV_ROOT="{{ rbenv_root }}"'
+      regexp: '^export RBENV_ROOT='
+      create: yes
+  - name: Add configurations to ~/.bashrc, ~/.profile, or ~/.zshrc or etc
+    lineinfile:
+      dest: "{{ rbenv_rc_path }}"
+      line: 'export PATH="$RBENV_ROOT/bin:$PATH"'
+      create: yes
+  - name: Add configurations to ~/.bashrc, ~/.profile, or ~/.zshrc or etc
+    lineinfile:
+      dest: "{{ rbenv_rc_path }}"
+      line: 'eval "$(rbenv init -)"'
+      create: yes
+  when: rbenv_rc_path != "NOT ADD"
+- include: "{{ rbenv_os_families.get(ansible_os_family, 'default') }}.yml"
+  static: no
+  when: rbenv_is_dependencies_installed and ansible_os_family in rbenv_os_families

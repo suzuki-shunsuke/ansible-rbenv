@@ -1,4 +1,32 @@
 ---
 # defaults file for rbenv
-ghq_executable: ghq
 rbenv_root: "{{ ansible_env.get('RBENV_ROOT', '{}/.rbenv'.format(ansible_env.HOME)) }}"
+rbenv_is_dependencies_installed: no
+rbenv_rc_path: NOT ADD
+# https://github.com/rbenv/ruby-build/wiki#suggested-build-environment
+rbenv_debian_build_dependencies:
+- autoconf
+- bison
+- build-essential
+- libssl-dev
+- libyaml-dev
+- libreadline6-dev
+- zlib1g-dev
+- libncurses5-dev
+- libffi-dev
+- libgdbm3
+- libgdbm-dev
+rbenv_redhat_build_dependencies:
+- gcc
+- bzip2
+- openssl-devel
+- libyaml-devel
+- libffi-devel
+- readline-devel
+- zlib-devel
+- gdbm-devel
+- ncurses-devel
+rbenv_darwin_build_dependencies:
+- openssl
+- libyaml
+- libffi

@@ -1,7 +1,8 @@
 ---
-- include: setup.yml
-- hosts: default
+- hosts: all
   roles:
-  - suzuki-shunsuke.ghq-module
+  - git
   - role: ansible-rbenv
-    ghq_executable: "{{'{}/bin/ghq'.format(ansible_env.get('GOPATH', '{}/.go'.format(ansible_env.HOME)))}}"
+    rbenv_rc_path: "{{ ansible_env.HOME }}/.bashrc"
+    rbenv_is_dependencies_installed: yes
+    rbenv_root: "{{ ansible_env.HOME }}/.ghq/github.com/rbenv/rbenv"
