@@ -32,7 +32,7 @@ Nothing.
 ```yaml
 - hosts: servers
   roles:
-  - suzuki-shunsuke.rbenv
+  - role: suzuki-shunsuke.rbenv
     rbenv_root: "{{ ansible_env.HOME }}/.ghq/github.com/rbenv/rbenv"
     rbenv_is_dependencies_installed: yes
     rbenv_rc_path: "{{ ansible_env.HOME }}/.bashrc"
