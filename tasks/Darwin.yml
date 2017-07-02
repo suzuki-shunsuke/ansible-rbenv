@@ -2,5 +2,4 @@
   homebrew:
     name: "{{ item }}"
   items: "{{ rbenv_darwin_build_dependencies }}"
-  become: "{{ rbenv_nonroot }}"
   when: rbenv_is_dependencies_installed
