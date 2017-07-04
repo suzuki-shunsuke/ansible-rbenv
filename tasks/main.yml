@@ -6,8 +6,10 @@
     state: directory
 - name: Clone rbenv
   git:
-    repo: https://github.com/rbenv/rbenv
+    repo: "{{ rbenv_repo }}"
     dest: "{{ rbenv_root }}"
+    version: "{{ rbenv_version }}"
+    update: "{{ rbenv_update }}"
 - name: Create directories
   file:
     dest: "{{ rbenv_root | dirname }}/plugins"
