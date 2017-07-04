@@ -15,6 +15,9 @@ https://galaxy.ansible.com/suzuki-shunsuke/rbenv/
 name | required | default | description
 --- | --- | --- | ---
 rbenv_root | no | $RBENV_ROOT >> $HOME/.rbenv
+rbenv_repo | no | https://github.com/rbenv/rbenv |
+rbenv_version | no | HEAD |
+rbenv_update | no | yes |
 rbenv_is_dependencies_installed | no | no | By default build dependencies are not installed
 rbenv_rc_path | no | "NOT ADD" | By default configuration is not added
 rbenv_darwin_build_dependencies | no | see [defaults/main.yml](https://github.com/suzuki-shunsuke/ansible-rbenv/blob/master/defaults/main.yml) | If rbenv_is_dependencies_installed is "no" this is ignored
@@ -33,6 +36,8 @@ Nothing.
 - hosts: servers
   roles:
   - role: suzuki-shunsuke.rbenv
+    rbenv_version: v1.1.1
+    rbenv_update: no
     rbenv_root: "{{ ansible_env.HOME }}/.ghq/github.com/rbenv/rbenv"
     rbenv_is_dependencies_installed: yes
     rbenv_rc_path: "{{ ansible_env.HOME }}/.bashrc"
