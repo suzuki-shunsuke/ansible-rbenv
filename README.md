@@ -45,6 +45,10 @@ Nothing.
     - readline
 ```
 
+## See also
+
+* [suzuki-shunsuke.rbenv-module](https://github.com/suzuki-shunsuke/ansible-rbenv-module): ansible module to run `rbenv` command
+
 ## License
 
 [MIT](LICENSE)
