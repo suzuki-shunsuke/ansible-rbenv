@@ -2,6 +2,6 @@
   yum:
     name: "{{ item }}"
     update_cache: yes
-  items: "{{ rbenv_redhat_build_dependencies }}"
+  with_items: "{{ rbenv_redhat_build_dependencies }}"
   become: "{{ rbenv_nonroot }}"
   when: rbenv_is_dependencies_installed
